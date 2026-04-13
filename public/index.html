@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport: Makes the layout responsive on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Feedback — Pulse</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Syne (display) + DM Sans (body) — distinctive pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       HEADER
+  ═══════════════════════════════════ -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <div class="logo">
+          <span class="logo__dot"></span>
+          <span class="logo__text">Pulse</span>
+        </div>
+        <p class="header__tagline">Customer Feedback Board</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════
+       MAIN LAYOUT — two-column on desktop
+  ═══════════════════════════════════ -->
+  <main class="main">
+    <div class="container layout">
+
+      <!-- LEFT COLUMN: Submit Feedback Form -->
+      <section class="panel panel--form" aria-label="Submit Feedback">
+
+        <div class="panel__header">
+          <h2 class="panel__title">Share Your Experience</h2>
+          <p class="panel__subtitle">Your feedback helps us improve.</p>
+        </div>
+
+        <!--
+          The form itself. We use id="feedbackForm" so script.js
+          can grab it with document.getElementById().
+          novalidate: We handle validation ourselves in JS + backend.
+        -->
+        <form id="feedbackForm" novalidate>
+
+          <!-- Name Field -->
+          <div class="form-group">
+            <label class="form-label" for="name">Your Name</label>
+            <input
+              class="form-input"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="e.g. Alex Johnson"
+              autocomplete="name"
+              maxlength="100"
+            />
+          </div>
+
+          <!-- Star Rating Field -->
+          <div class="form-group">
+            <label class="form-label">Rating</label>
+            <!--
+              Star rating uses radio inputs (semantically correct —
+              one choice from a group). CSS + JS style them as stars.
+            -->
+            <div class="star-rating" role="group" aria-label="Select a rating from 1 to 5 stars">
+              <input type="radio" id="star5" name="rating" value="5" />
+              <label for="star5" title="5 stars — Excellent">★</label>
+
+              <input type="radio" id="star4" name="rating" value="4" />
+              <label for="star4" title="4 stars — Good">★</label>
+
+              <input type="radio" id="star3" name="rating" value="3" />
+              <label for="star3" title="3 stars — Average">★</label>
+
+              <input type="radio" id="star2" name="rating" value="2" />
+              <label for="star2" title="2 stars — Poor">★</label>
+
+              <input type="radio" id="star1" name="rating" value="1" />
+              <label for="star1" title="1 star — Terrible">★</label>
+            </div>
+          </div>
+
+          <!-- Message Field -->
+          <div class="form-group">
+            <label class="form-label" for="message">Your Message</label>
+            <textarea
+              class="form-input form-textarea"
+              id="message"
+              name="message"
+              placeholder="Tell us about your experience..."
+              maxlength="1000"
+              rows="4"
+            ></textarea>
+            <!-- Live character counter, updated by script.js -->
+            <span class="char-counter" id="charCounter">0 / 1000</span>
+          </div>
+
+          <!-- Error container: hidden by default, shown by script.js on validation failure -->
+          <div class="error-box" id="errorBox" role="alert" aria-live="polite"></div>
+
+          <!-- Submit Button -->
+          <button class="btn btn--primary" type="submit" id="submitBtn">
+            <span class="btn__text">Submit Feedback</span>
+            <!-- Spinner shown during the API call -->
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+
+        </form>
+
+        <!-- Success message: hidden by default, shown after successful submission -->
+        <div class="success-message" id="successMessage" role="status" aria-live="polite">
+          <span class="success-message__icon">✓</span>
+          <span>Thank you! Your feedback was submitted.</span>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: Live Feedback Feed -->
+      <section class="panel panel--feed" aria-label="Feedback Feed">
+
+        <div class="panel__header">
+          <h2 class="panel__title">Live Feed</h2>
+          <!--
+            Badge shows the count of entries.
+            Updated dynamically by script.js.
+          -->
+          <span class="badge" id="feedCount">0</span>
+        </div>
+
+        <!--
+          feedList: The container where script.js injects
+          feedback cards dynamically.
+        -->
+        <div class="feed-list" id="feedList">
+
+          <!-- Loading state: shown while the first GET request is pending -->
+          <div class="feed-placeholder" id="feedPlaceholder">
+            <div class="spinner" aria-label="Loading feedback..."></div>
+            <p>Loading feedback...</p>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <p>Built with Node.js + Express · Vanilla JS · REST API</p>
+    </div>
+  </footer>
+
+  <!--
+    Script loaded at the bottom of <body> (not <head>).
+    This ensures the DOM is fully parsed before script.js runs,
+    so getElementById() calls won't return null.
+  -->
+  <script src="script.js"></script>
+
+</body>
+</html>
