@@ -1,0 +1,604 @@
+:root {
+  /* Colors */
+  --color-bg:          #f5f2ee;       /* warm off-white background */
+  --color-surface:     #ffffff;       /* card/panel surface */
+  --color-ink:         #1a1612;       /* near-black text */
+  --color-ink-muted:   #6b6358;       /* secondary text */
+  --color-border:      #e2ddd7;       /* subtle borders */
+  --color-accent:      #d4621a;       /* amber-orange accent */
+  --color-accent-soft: #fdf0e8;       /* tint of accent for backgrounds */
+  --color-star:        #e8a020;       /* star rating gold */
+  --color-star-empty:  #d9d3cb;       /* unselected star */
+  --color-error:       #c0392b;       /* error state */
+  --color-error-bg:    #fdf2f2;
+  --color-success:     #27ae60;       /* success state */
+  --color-success-bg:  #f0faf5;
+
+  /* Rating badge backgrounds (per star level) */
+  --color-rating-5: #fff8e1;
+  --color-rating-4: #f0f9f4;
+  --color-rating-3: #f5f5f5;
+  --color-rating-2: #fff3e0;
+  --color-rating-1: #fdecea;
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;   /* headings */
+  --font-body:    'DM Sans', sans-serif; /* body text */
+
+  /* Spacing scale */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   40px;
+  --space-2xl:  64px;
+
+  /* Borders & Shadows */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.12);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-med:  0.3s ease;
+}
+
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img { max-width: 100%; display: block; }
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* equal halves */
+  gap: var(--space-xl);
+  align-items: start;  
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+/* On tablets & mobile: stack vertically */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-top: var(--space-lg);
+  }
+}
+
+
+
+.header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md) 0;
+  position: sticky;   
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.3); opacity: 0.7; }
+}
+
+.logo__text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: -0.03em;
+}
+
+.header__tagline {
+  font-size: 0.85rem;
+  color: var(--color-ink-muted);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .header__tagline { display: none; } /* hide on very small screens */
+}
+
+
+/* ─────────────────────────────────────────────
+   5. PANEL (shared styles for both columns)
+   ───────────────────────────────────────────── */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panel__title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+}
+
+.panel__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+  margin-top: var(--space-xs);
+}
+
+@media (max-width: 480px) {
+  .panel { padding: var(--space-lg); }
+}
+
+
+/* ─────────────────────────────────────────────
+   6. FORM ELEMENTS
+   ───────────────────────────────────────────── */
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+  letter-spacing: 0.01em;
+}
+
+/* Shared base for <input> and <textarea> */
+.form-input {
+  width: 100%;
+  padding: 12px var(--space-md);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--color-ink-muted);
+  opacity: 0.6;
+}
+
+/* Focus state: accent-coloured border + subtle glow */
+.form-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 98, 26, 0.12);
+  background: var(--color-surface);
+}
+
+/* Error state (class added by script.js) */
+.form-input.is-error {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Character counter under textarea */
+.char-counter {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--color-ink-muted);
+  margin-top: var(--space-xs);
+}
+
+.char-counter.is-warning { color: var(--color-error); }
+
+
+/* ─────────────────────────────────────────────
+   7. STAR RATING
+   Uses the "reverse order + sibling selector" trick:
+   Stars are ordered 5→1 in HTML but displayed 1→5.
+   This lets us select a star and highlight all stars
+   before it using CSS only (+, ~).
+   ───────────────────────────────────────────── */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;  /* flip visual order (5★ right → 1★ left) */
+  justify-content: flex-end;    /* push stars to the left */
+  gap: 4px;
+}
+
+/* Hide the actual radio inputs — we show the labels as stars */
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2rem;
+  color: var(--color-star-empty);
+  cursor: pointer;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  line-height: 1;
+  user-select: none;
+}
+
+/* When a star is hovered: colour it AND all stars after it
+   (which appear visually to the left because of flex-direction: row-reverse) */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: var(--color-star);
+  transform: scale(1.15);
+}
+
+/* When a radio is checked: colour its label and all siblings after it */
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating input[type="radio"]:checked + label {
+  color: var(--color-star);
+}
+
+
+/* ─────────────────────────────────────────────
+   8. BUTTONS
+   ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 14px var(--space-xl);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(212, 98, 26, 0.3);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #b8511a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(212, 98, 26, 0.4);
+}
+
+.btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Disabled state: shown while API call is in progress */
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Spinner (CSS-only): hidden by default, shown via .is-loading class */
+.btn__spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.btn.is-loading .btn__spinner { display: block; }
+.btn.is-loading .btn__text    { opacity: 0.8; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ─────────────────────────────────────────────
+   9. ERROR & SUCCESS MESSAGES
+   ───────────────────────────────────────────── */
+
+/* Error box: hidden until script.js adds error content */
+.error-box {
+  display: none;   /* hidden when empty */
+  background: var(--color-error-bg);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  border-left: 3px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  font-size: 0.875rem;
+  color: var(--color-error);
+}
+
+.error-box.is-visible { display: block; }
+
+.error-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.error-box li::before {
+  content: "⚠ ";
+}
+
+/* Success message */
+.success-message {
+  display: none;  /* hidden until submission succeeds */
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-success-bg);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--color-success);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: var(--space-md);
+  /* Slide-in animation */
+  animation: slideIn 0.3s ease;
+}
+
+.success-message.is-visible { display: flex; }
+
+.success-message__icon {
+  width: 22px;
+  height: 22px;
+  background: var(--color-success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────
+   10. FEED (right column)
+   ───────────────────────────────────────────── */
+
+/* Count badge next to "Live Feed" title */
+.badge {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border: 1px solid rgba(212, 98, 26, 0.2);
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Scrollable feed list */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 4px;  /* prevents scrollbar overlap */
+}
+
+/* Custom scrollbar (WebKit) */
+.feed-list::-webkit-scrollbar       { width: 5px; }
+.feed-list::-webkit-scrollbar-track { background: var(--color-bg); border-radius: 10px; }
+.feed-list::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
+
+/* Loading placeholder */
+.feed-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl) 0;
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
+}
+
+/* CSS spinner for loading state */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Empty-state message */
+.feed-empty {
+  text-align: center;
+  padding: var(--space-xl) 0;
+  color: var(--color-ink-muted);
+}
+
+.feed-empty__icon { font-size: 2.5rem; margin-bottom: var(--space-sm); }
+.feed-empty__text { font-size: 0.9rem; }
+
+
+/* ─────────────────────────────────────────────
+   11. FEEDBACK CARD
+   Each card is injected by script.js.
+   ───────────────────────────────────────────── */
+.feedback-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  /* Entry animation: new cards slide in */
+  animation: cardIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.feedback-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* Card top row: name left, rating right */
+.feedback-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.feedback-card__name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+
+/* Rating pill badge */
+.feedback-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Dynamically coloured rating badges (classes added by script.js) */
+.rating-5 { background: var(--color-rating-5); color: #b7791f; }
+.rating-4 { background: var(--color-rating-4); color: #276749; }
+.rating-3 { background: var(--color-rating-3); color: #4a5568; }
+.rating-2 { background: var(--color-rating-2); color: #c05621; }
+.rating-1 { background: var(--color-rating-1); color: var(--color-error); }
+
+.feedback-card__message {
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  line-height: 1.6;
+  margin-bottom: var(--space-sm);
+  word-break: break-word;
+}
+
+.feedback-card__time {
+  font-size: 0.75rem;
+  color: var(--color-ink-muted);
+}
+
+
+/* ─────────────────────────────────────────────
+   12. FOOTER
+   ───────────────────────────────────────────── */
+.footer {
+  margin-top: auto;  /* push to bottom with flex column on body */
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-lg) 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+}
+
+
+/* ─────────────────────────────────────────────
+   13. RESPONSIVE ADJUSTMENTS
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Feed column: lower max-height on mobile */
+  .feed-list { max-height: 400px; }
+
+  .panel__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  :root { font-size: 15px; }
+
+  .btn { padding: 13px var(--space-lg); }
+
+  .star-rating label { font-size: 1.75rem; }
+}
